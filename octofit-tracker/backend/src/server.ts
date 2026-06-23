@@ -5,15 +5,22 @@ import leaderboardRouter from './routes/leaderboard';
 import teamsRouter from './routes/teams';
 import usersRouter from './routes/users';
 import workoutsRouter from './routes/workouts';
-import { getApiBaseUrl } from './utils/baseUrl';
 
 const app = express();
-const PORT = Number(process.env.PORT) || 8000;
+const PORT = 8000;
+
+const getApiBaseUrl = (): string => {
+  const codespaceName = process.env.CODESPACE_NAME;
+
+  return codespaceName
+    ? `https://${codespaceName}-8000.app.github.dev`
+    : 'http://localhost:8000';
+};
 
 app.use(express.json());
 
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', baseUrl: getApiBaseUrl(PORT) });
+  res.json({ status: 'ok', baseUrl: getApiBaseUrl() });
 });
 
 app.use('/api/users', usersRouter);
@@ -23,7 +30,7 @@ app.use('/api/leaderboard', leaderboardRouter);
 app.use('/api/workouts', workoutsRouter);
 
 app.get('/api/config', (_req, res) => {
-  res.json({ baseUrl: getApiBaseUrl(PORT) });
+  res.json({ baseUrl: getApiBaseUrl() });
 });
 
 const startServer = async () => {
