@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 
-const codespaceName = import.meta.env.VITE_CODESPACE_NAME
-const API_BASE_URL = codespaceName
-  ? `https://${codespaceName}-8000.app.github.dev`
-  : 'http://localhost:8000'
+const CODESPACES_API_URL = `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/teams/`
+const LOCAL_API_URL = 'http://localhost:8000/api/teams/'
+const API_URL = import.meta.env.VITE_CODESPACE_NAME ? CODESPACES_API_URL : LOCAL_API_URL
 
 const normalizeItems = (payload) => {
   if (Array.isArray(payload)) {
@@ -34,7 +33,7 @@ function Teams() {
     const loadTeams = async () => {
       try {
         setLoading(true)
-        const response = await fetch(`${API_BASE_URL}/api/teams/`)
+        const response = await fetch(API_URL)
 
         if (!response.ok) {
           throw new Error(`Failed to fetch teams: ${response.status}`)
@@ -55,7 +54,7 @@ function Teams() {
   return (
     <section>
       <h2 className="h4 mb-3">Teams</h2>
-      <p className="text-body-secondary small">Endpoint: {`${API_BASE_URL}/api/teams/`}</p>
+      <p className="text-body-secondary small">Endpoint: {API_URL}</p>
       {loading && <p>Loading teams...</p>}
       {error && <div className="alert alert-danger">{error}</div>}
       {!loading && !error && (
