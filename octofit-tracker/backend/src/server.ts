@@ -1,6 +1,6 @@
 import express from 'express';
 import activitiesRouter from './routes/activities';
-import { connectDatabase } from './database';
+import { connectDatabase } from './config/database';
 import leaderboardRouter from './routes/leaderboard';
 import teamsRouter from './routes/teams';
 import usersRouter from './routes/users';

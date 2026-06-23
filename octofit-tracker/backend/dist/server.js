@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const activities_1 = __importDefault(require("./routes/activities"));
-const database_1 = require("./database");
+const database_1 = require("./config/database");
 const leaderboard_1 = __importDefault(require("./routes/leaderboard"));
 const teams_1 = __importDefault(require("./routes/teams"));
 const users_1 = __importDefault(require("./routes/users"));
