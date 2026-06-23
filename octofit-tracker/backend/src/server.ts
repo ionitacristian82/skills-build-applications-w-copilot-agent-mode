@@ -1,6 +1,6 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import activitiesRouter from './routes/activities';
+import { connectDatabase } from './database';
 import leaderboardRouter from './routes/leaderboard';
 import teamsRouter from './routes/teams';
 import usersRouter from './routes/users';
@@ -9,7 +9,6 @@ import { getApiBaseUrl } from './utils/baseUrl';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 8000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/octofit_db';
 
 app.use(express.json());
 
@@ -29,7 +28,7 @@ app.get('/api/config', (_req, res) => {
 
 const startServer = async () => {
   try {
-    await mongoose.connect(MONGO_URI);
+    await connectDatabase();
     app.listen(PORT, () => {
       console.log(`OctoFit backend running on port ${PORT}`);
     });

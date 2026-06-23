@@ -1,23 +1,21 @@
-import mongoose from 'mongoose';
 import ActivityModel from '../models/activity';
+import { connectDatabase, disconnectDatabase } from '../database';
 import LeaderboardModel from '../models/leaderboard';
 import TeamModel from '../models/team';
 import UserModel from '../models/user';
 import WorkoutModel from '../models/workout';
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/octofit_db';
-
 type SeedUserRef = {
-  _id: mongoose.Types.ObjectId;
+  _id: string;
 };
 
 type SeedActivityRef = {
-  user: mongoose.Types.ObjectId;
+  user: string;
   pointsEarned: number;
 };
 
 type RankedUserEntry = {
-  user: mongoose.Types.ObjectId;
+  user: string;
   points: number;
   rank: number;
 };
@@ -25,7 +23,7 @@ type RankedUserEntry = {
 const seed = async (): Promise<void> => {
   try {
     console.log('Seed the octofit_db database with test data');
-    await mongoose.connect(MONGO_URI);
+    await connectDatabase();
 
     await Promise.all([
       ActivityModel.deleteMany({}),
@@ -207,7 +205,7 @@ const seed = async (): Promise<void> => {
     console.error('Seeding failed:', error);
     process.exitCode = 1;
   } finally {
-    await mongoose.disconnect();
+    await disconnectDatabase();
   }
 };
 
